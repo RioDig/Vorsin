@@ -334,7 +334,7 @@ class Report:
 
     def generate_pdf(self, file_name: str) -> None:
         self.__error_checker(file_name, '.pdf')
-        env = Environment(loader=FileSystemLoader('.'))
+        env = Environment(loader=FileSystemLoader('./'))
         template = env.get_template('template.html')
 
         first_table_data = self.__generate_years_table()
@@ -375,6 +375,7 @@ class Report:
         return salary_city, count_city
 
 
-inputs = UserInput()
-AnalysisResult(DataSet(inputs.file_name), inputs.profession_name).get_results().print_result()\
-    .generate_pdf(input('Введите название сохраняемого файла: '))
+def generate_pdf():
+    inputs = UserInput()
+    AnalysisResult(DataSet(inputs.file_name), inputs.profession_name).get_results().print_result()\
+        .generate_pdf(input('Введите название сохраняемого файла: '))
