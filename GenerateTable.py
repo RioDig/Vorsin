@@ -291,10 +291,11 @@ class UserInput:
             custom_exit('Параметр поиска некорректен')
 
 
-inputs = UserInput()
-Table().print_table(file_name=inputs.file_name,
-                    filter_param=inputs.filter_param,
-                    sorting_param=inputs.sorting_param,
-                    reverse_sort_param=inputs.reverse_sort_param,
-                    output_range=inputs.output_range,
-                    table_rows=inputs.table_rows)
+def generate_table():
+    inputs = UserInput()
+    Table().print_table(file_name=inputs.file_name,
+                        filter_param=inputs.filter_param,
+                        sorting_param=inputs.sorting_param,
+                        reverse_sort_param=inputs.reverse_sort_param,
+                        output_range=inputs.output_range,
+                        table_rows=inputs.table_rows)

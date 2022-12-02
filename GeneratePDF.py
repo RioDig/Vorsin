@@ -7,6 +7,8 @@ import openpyxl
 import openpyxl.styles.numbers
 import matplotlib.pyplot as plt
 import numpy as np
+import pdfkit
+from jinja2 import Environment, PackageLoader, FileSystemLoader
 from typing import List, Dict, Tuple, Any
 from openpyxl.styles import NamedStyle, Border, Side, Font
 
@@ -252,21 +254,14 @@ class Report:
         wb.create_sheet('Статистика по городам')
 
         sheet_stat_year = wb['Статистика по годам']
-        sheet_stat_year.append(['Год',
-                                'Средняя зарплата',
-                                f'Средняя зарплата - {self.profession_name}',
-                                'Количество вакансий',
-                                f'Количество вакансий - {self.profession_name}'])
-        for year, value in self.year_salary.items():
-            sheet_stat_year.append(
-                [year, value, self.job_year_salary[year], self.count_salary[year], self.job_count_salary[year]])
+        first = self.__generate_years_table()
+        for row in first:
+            sheet_stat_year.append(row)
 
         sheet_stat_city = wb['Статистика по городам']
-        sheet_stat_city.append(['Город', 'Уровень зарплат', '', 'Город', 'Доля вакансий'])
-        iterable_city_count = iter(self.city_count)
-        for city, value in self.city_salary.items():
-            city_count, value_count = next(iterable_city_count)
-            sheet_stat_city.append([city, value, '', city_count, value_count])
+        second = list(self.__generate_city_table())
+        for row in zip(second[0], second[1]):
+            sheet_stat_city.append([*row[0], '', *row[1]])
 
         self.__styling_excel(sheet_stat_year)
         self.__styling_excel(sheet_stat_city)
@@ -337,7 +332,50 @@ class Report:
         plt.tight_layout()
         plt.savefig(file_name)
 
+    def generate_pdf(self, file_name: str) -> None:
+        self.__error_checker(file_name, '.pdf')
+        env = Environment(loader=FileSystemLoader('./'))
+        template = env.get_template('template.html')
 
-inputs = UserInput()
-AnalysisResult(DataSet(inputs.file_name), inputs.profession_name).get_results().print_result()\
-    .generate_image(input('Введите название сохраняемого файла: '))
+        first_table_data = self.__generate_years_table()
+        second_table_data, third_table_data = self.__generate_city_table()
+        pdf_template = template.render({
+            'graph': 'graph.png',
+            'first_table': first_table_data[1:],
+            'second_table': second_table_data[1:],
+            'third_table': list(
+                map(lambda val: (val[0], '{:.2f}%'.format(val[1] * 100).replace('.', ',')), third_table_data[1:])),
+            'first_table_header': first_table_data[0],
+            'second_table_header': second_table_data[0],
+            'third_table_header': third_table_data[0],
+            'profession_name': self.profession_name
+        })
+
+        config = pdfkit.configuration(wkhtmltopdf=r'C:\Program Files\wkhtmltopdf\bin\wkhtmltopdf.exe')
+        pdfkit.from_string(pdf_template, file_name, configuration=config, options={"enable-local-file-access": ""})
+
+    def __generate_years_table(self) -> List[List[str]]:
+        headers = ['Год',
+                   'Средняя зарплата',
+                   f'Средняя зарплата - {self.profession_name}',
+                   'Количество вакансий',
+                   f'Количество вакансий - {self.profession_name}']
+        rows = [[year, value, self.job_year_salary[year], self.count_salary[year], self.job_count_salary[year]]
+                for year, value in self.year_salary.items()]
+        return [headers, *rows]
+
+    def __generate_city_table(self) -> (List[List[str]], List[List[str]]):
+        salary_city = [['Город', 'Уровень зарплат']]
+        count_city = [['Город', 'Доля вакансий']]
+        iterable_city_count = iter(self.city_count)
+        for city, value in self.city_salary.items():
+            city_count, value_count = next(iterable_city_count)
+            salary_city.append([city, value])
+            count_city.append([city_count, value_count])
+        return salary_city, count_city
+
+
+def generate_pdf():
+    inputs = UserInput()
+    AnalysisResult(DataSet(inputs.file_name), inputs.profession_name).get_results().print_result()\
+        .generate_pdf(input('Введите название сохраняемого файла: '))
