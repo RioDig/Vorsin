@@ -11,5 +11,5 @@ def main():
     else:
         raise NameError('Неизвестная команда')
 
-# first
+# second
 main()
