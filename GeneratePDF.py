@@ -157,7 +157,7 @@ class VacancyCountDict:
         self.length = 0
         self.count_dict = {}
 
-    def add(self, key: str | int):
+    def add(self, key: str or int):
         """
         Добавляет или обновляет ключ и его значение в словаре
         :param key: Ключ словаря
@@ -169,7 +169,7 @@ class VacancyCountDict:
         self.length += 1
         return self
 
-    def add_not_contains(self, key: str | int):
+    def add_not_contains(self, key: str or int):
         """
         Добавляет ключ при его отсутствии в словаре
         :param key: Ключ словаря
