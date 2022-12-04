@@ -8,6 +8,7 @@ import openpyxl.styles.numbers
 import matplotlib.pyplot as plt
 import numpy as np
 import pdfkit
+import doctest
 from jinja2 import Environment, PackageLoader, FileSystemLoader
 from typing import List, Dict, Tuple, Any
 from openpyxl.styles import NamedStyle, Border, Side, Font
@@ -26,6 +27,19 @@ class DataSet:
         Инициализирует объект DataSet, выполняет преобразование файла в список вакансий.
 
         :param file_name: Название файла исходных данных
+
+        Tests
+        -----
+        >>>type(DataSet('vaca.csv')).__name__
+        'DataSet'
+        >>>len(DataSet('vaca.csv').vacancies_objects)
+        2
+        >>>DataSet('vaca.csv').vacancies_objects[0].name
+        'Специалист'
+        >>>DataSet('vaca.csv').vacancies_objects[1].name
+        'Менеджер'
+        >>>DataSet('vaca.csv').vacancies_objects[0].area_name
+        'Санктg-Петербург'
         """
         self.file_name = file_name
         self.vacancies_objects = [Vacancy(vacancy) for vacancy in self.csv_filer(*self.csv_reader(file_name))]
@@ -91,6 +105,24 @@ class Vacancy:
         Инициализирует объект Vacancy, выполняет преобразования полей.
 
         :param vacancy: Словарь вакансии со всеми полями вакансии.
+
+        Tests
+        -----
+        >>>vacancies = {'name': 'Программист',
+        ...'salary_from': '40000.0',
+        ...'salary_to': '55000.0',
+        ...'salary_currency': 'RUR',
+        ...'area_name': 'Москва','published_at': '2012-04-09T13:49:00+0400',}
+        >>>type(Vacancy(vacancies)).__name__
+        'Vacancy'
+        >>>Vacancy(vacancies).name
+        'Программист'
+        >>>Vacancy(vacancies).salary
+        47500
+        >>>Vacancy(vacancies).area_name
+        'Москва'
+        >>>Vacancy(vacancies).published_at
+        2012
         """
         self.__currency_to_rub = {
             "AZN": 35.68,
@@ -206,6 +238,33 @@ class VacancySalaryDict:
     def __init__(self):
         """
         Инициализиует объект VacancySalaryDict
+
+        Tests
+        -----
+        >>>salary_dict = VacancySalaryDict()
+        >>>type(salary_dict).__name__
+        'VacancySalaryDict'
+        >>>salary_dict.add(200, 2022)
+        >>>salary_dict.length
+        1
+        >>>salary_dict.year_salary_dict
+        {2022: 200}
+        >>>salary_dict.year_count_dict
+        {2022: 1}
+        >>>salary_dict.add(100, 2021)
+        >>>salary_dict.length
+        2
+        >>>salary_dict.year_salary_dict
+        {2022: 200, 2021: 100}
+        >>>salary_dict.year_count_dict
+        {2022: 1, 2021: 1}
+        >>>salary_dict.add(100, 2022)
+        >>>salary_dict.length
+        3
+        >>>salary_dict.year_salary_dict
+        {2022: 300, 2021: 100}
+        >>>salary_dict.year_count_dict
+        {2022: 2, 2021: 1}
         """
         self.length = 0
         self.year_salary_dict = {}
