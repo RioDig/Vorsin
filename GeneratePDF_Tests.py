@@ -53,34 +53,37 @@ class VacancySalaryDictTests(TestCase):
         self.assertEqual(self.salary_dict.year_salary_dict, {2022: 300, 2021: 100})
         self.assertEqual(self.salary_dict.year_count_dict, {2022: 2, 2021: 1})
 
+    salary_dict_area = VacancySalaryDict()
+
     def test_salary_dict_add_area(self):
-        self.salary_dict.add_area(200, 'Москва')
-        self.assertEqual(self.salary_dict.length, 1)
-        self.assertEqual(self.salary_dict.area_salary_dict, {'Москва': 200})
-        self.assertEqual(self.salary_dict.year_count_dict, {'Москва': 1})
+        self.salary_dict_area.add_area(200, 'Москва')
+        self.assertEqual(self.salary_dict_area.length, 1)
+        self.assertEqual(self.salary_dict_area.area_salary_dict, {'Москва': 200})
+        self.assertEqual(self.salary_dict_area.year_count_dict, {'Москва': 1})
 
-        self.salary_dict.add_area(100, 'Москва')
-        self.assertEqual(self.salary_dict.length, 2)
-        self.assertEqual(self.salary_dict.area_salary_dict, {'Москва': 300})
-        self.assertEqual(self.salary_dict.year_count_dict, {'Москва': 2})
+        self.salary_dict_area.add_area(100, 'Москва')
+        self.assertEqual(self.salary_dict_area.length, 2)
+        self.assertEqual(self.salary_dict_area.area_salary_dict, {'Москва': 300})
+        self.assertEqual(self.salary_dict_area.year_count_dict, {'Москва': 2})
 
-        self.salary_dict.add_area(100, 'Екатеринбург')
-        self.assertEqual(self.salary_dict.length, 3)
-        self.assertEqual(self.salary_dict.area_salary_dict, {'Москва': 300, 'Екатеринбург': 100})
-        self.assertEqual(self.salary_dict.year_count_dict, {'Москва': 2, 'Екатеринбург': 1})
+        self.salary_dict_area.add_area(100, 'Екатеринбург')
+        self.assertEqual(self.salary_dict_area.length, 3)
+        self.assertEqual(self.salary_dict_area.area_salary_dict, {'Москва': 300, 'Екатеринбург': 100})
+        self.assertEqual(self.salary_dict_area.year_count_dict, {'Москва': 2, 'Екатеринбург': 1})
 
     def test_salary_dict_avg_salary(self):
-        self.assertEqual(self.salary_dict.get_average_salary(), None)
+        salary_dict = VacancySalaryDict()
+        self.assertEqual(salary_dict.get_average_salary(), None)
 
-        self.salary_dict.add(100, 2022)
-        self.salary_dict.add(200, 2022)
-        self.salary_dict.add(300, 2022)
-        self.salary_dict.get_average_salary()
-        self.assertEqual(self.salary_dict.year_salary_dict[2022], 200)
+        salary_dict.add(100, 2022)
+        salary_dict.add(200, 2022)
+        salary_dict.add(300, 2022)
+        salary_dict.get_average_salary()
+        self.assertEqual(salary_dict.year_salary_dict[2022], 200)
 
-        self.salary_dict.add_not_contains(2023)
-        self.salary_dict.get_average_salary()
-        self.assertEqual(self.salary_dict.year_salary_dict[2023], 0)
+        salary_dict.add_not_contains(2023)
+        salary_dict.get_average_salary()
+        self.assertEqual(salary_dict.year_salary_dict[2023], 0)
 
 
 class DataSetTests(TestCase):
@@ -95,7 +98,3 @@ class DataSetTests(TestCase):
         self.assertEqual(self.dataset.vacancies_objects[0].name, 'Специалист')
         self.assertEqual(self.dataset.vacancies_objects[1].name, 'Менеджер')
         self.assertEqual(self.dataset.vacancies_objects[0].area_name, 'Санктg-Петербург')
-
-
-
-
