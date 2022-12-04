@@ -14,18 +14,42 @@ from openpyxl.styles import NamedStyle, Border, Side, Font
 
 
 class DataSet:
+    """
+    Класс для представления первичных данных всех вакансий.
+
+    Attributes:
+        file_name (str): Название файла исходных данных
+        vacancies_objects (List[Vacancy]): Список вакансий типа Vacancy
+    """
     def __init__(self, file_name: str):
+        """
+        Инициализирует объект DataSet, выполняет преобразование файла в список вакансий.
+
+        :param file_name: Название файла исходных данных
+        """
         self.file_name = file_name
         self.vacancies_objects = [Vacancy(vacancy) for vacancy in self.csv_filer(*self.csv_reader(file_name))]
 
     @staticmethod
     def __clean_html(raw_html: str) -> str:
+        """
+        Выполняет чистку строки от HTML-тегов и лишних специальных символов.
+
+        :param raw_html: Исходная строка данных
+        :return: Возвращает универсальную строку для обработки
+        """
         clean_text = re.sub('<.*?>', '', raw_html).replace('\r\n', ' ').replace(u'\xa0', ' ').replace(u'\u2002',
                                                                                                       ' ').strip()
         return re.sub(' +', ' ', clean_text)
 
     @staticmethod
     def csv_reader(file_name: str) -> Tuple[List[str], List[List[str]]]:
+        """
+        Выполняет чтение файла и построчное извлечение данных из файла.
+
+        :param file_name: Название файла исходных данных
+        :return: Возвращает заголовки файла и список вакансий в виде строк
+        """
         reader = csv.reader(open(file_name, encoding='utf-8-sig'))
         vacancies = [line for line in reader]
         if len(vacancies) == 0:
@@ -33,6 +57,13 @@ class DataSet:
         return vacancies[0], vacancies[1:]
 
     def csv_filer(self, list_naming: List[str], reader: List[List[str]]) -> List[Dict]:
+        """
+        Формирует список словарей, соответствующие вакансиям.
+
+        :param list_naming: Заголовки файла
+        :param reader: Список вакансий в виде строк
+        :return: Возвращает список словарей по каждой вакансии
+        """
         for i in range(len(reader) - 1, -1, -1):
             if reader[i].__contains__(''):
                 reader[i] = ['']
@@ -45,7 +76,22 @@ class DataSet:
 
 
 class Vacancy:
+    """
+    Класс для представления данных вакансии.
+
+    Attributes:
+        __currency_to_rub (dict): Словарь перевода с валюты на рубли.
+        name (str): Название вакансии.
+        salary (int): Величина средней зарплаты по вакансии.
+        area_name (str): Город вакансии.
+        published_at (int): Год публикации вакансии.
+    """
     def __init__(self, vacancy: Dict):
+        """
+        Инициализирует объект Vacancy, выполняет преобразования полей.
+
+        :param vacancy: Словарь вакансии со всеми полями вакансии.
+        """
         self.__currency_to_rub = {
             "AZN": 35.68,
             "BYR": 23.91,
@@ -66,12 +112,27 @@ class Vacancy:
 
 
 def custom_exit(message: str) -> None:
+    """
+    Выполняет выход из программы с пользовательским выводом.
+
+    :param message: Сообщение для вывода
+    """
     print(message)
     exit()
 
 
 class UserInput:
+    """
+    Класс для предоставления вводных данных по параметрам
+
+    Attributes:
+        file_name (str): Название файла исходных данных
+        profession_name (str): Название профессии
+    """
     def __init__(self):
+        """
+        Инициализирует объект UserInput, выполняет сохранение пользовательских вводов
+        """
         inputs = [
             'Введите название файла',
             'Введите название профессии',
@@ -82,23 +143,46 @@ class UserInput:
 
 
 class VacancyCountDict:
+    """
+    Класс для представления словаря - {вакансия : количество}
+
+    Attributes:
+        length (int): Длина словаря
+        count_dict (dict): Пользовательский словарь
+    """
     def __init__(self):
+        """
+        Инициализирует объект VacancyCountDict
+        """
         self.length = 0
         self.count_dict = {}
 
-    def add(self, key: int):
+    def add(self, key: str | int):
+        """
+        Добавляет или обновляет ключ и его значение в словаре
+        :param key: Ключ словаря
+        :return: Возвращает объект VacancyCountDict
+        """
         if self.count_dict.get(key) is None:
             self.count_dict[key] = 0
         self.count_dict[key] += 1
         self.length += 1
         return self
 
-    def add_not_contains(self, key: int):
+    def add_not_contains(self, key: str | int):
+        """
+        Добавляет ключ при его отсутствии в словаре
+        :param key: Ключ словаря
+        :return: Возвращает объект VacancyCountDict
+        """
         if self.count_dict.get(key) is None:
             self.count_dict[key] = 0
         return self
 
     def percent_add(self) -> None:
+        """
+        Выполняет выборку словаря по проценту от длины словаря
+        """
         keys = []
         for key, value in self.count_dict.items():
             if value >= int(self.length * 0.01):
@@ -110,13 +194,31 @@ class VacancyCountDict:
 
 
 class VacancySalaryDict:
+    """
+    Класс для представления словаря - {вакансия : оклад}
+
+    Attributes:
+        length (int): Длина словаря
+        year_salary_dict (dict): Словарь в виде {год: оклад}
+        year_count_dict (dict): Словарь в виде {год: количество}
+        area_salary_dict (dict): Словарь в виде {город: оклад}
+    """
     def __init__(self):
+        """
+        Инициализиует объект VacancySalaryDict
+        """
         self.length = 0
         self.year_salary_dict = {}
         self.year_count_dict = {}
         self.area_salary_dict = {}
 
     def add(self, salary: int, year: int):
+        """
+        Добавляет или обновляет ключ и его значение в словаре
+        :param salary: Оклад вакансии
+        :param year: Год публикации вакансии
+        :return: Возвращает объект VacancySalaryDict
+        """
         if self.year_salary_dict.get(year) is None:
             self.year_salary_dict[year] = 0
         if self.year_count_dict.get(year) is None:
@@ -127,11 +229,22 @@ class VacancySalaryDict:
         return self
 
     def add_not_contains(self, year: int):
+        """
+        Добавляет ключ при его отсутствии в словаре
+        :param year: Год публикации вакансии
+        :return: Возвращает объект VacancySalaryDict
+        """
         if self.year_salary_dict.get(year) is None:
             self.year_salary_dict[year] = 0
         return self
 
     def add_area(self, salary: int, area: str):
+        """
+        Добавляет или обновляет город и оклад в словаре
+        :param salary: Оклад вакансии
+        :param area: Город вакансии
+        :return: Возвращает объект VacancySalaryDict
+        """
         if self.area_salary_dict.get(area) is None:
             self.area_salary_dict[area] = 0
             self.year_count_dict[area] = 0
@@ -141,6 +254,9 @@ class VacancySalaryDict:
         return self
 
     def get_average_salary(self) -> None:
+        """
+        Выполняет расчет среднего оклада по годам
+        """
         if self.length > 0:
             for key, value in self.year_salary_dict.items():
                 try:
@@ -149,6 +265,9 @@ class VacancySalaryDict:
                     self.year_salary_dict[key] = 0
 
     def percent_add(self) -> None:
+        """
+        Выполняет выборку словаря по проценту от длины словаря
+        """
         keys = []
         for key, value in self.year_count_dict.items():
             if value >= int(self.length * 0.01):
@@ -160,7 +279,26 @@ class VacancySalaryDict:
 
 
 class AnalysisResult:
+    """
+    Класс для представления данных по анализу вакансий
+
+    Attributes:
+        dataset (DataSet): Набор данных по вакансиям
+        profession_name (str): Название профессии
+        year_salary (VacancySalaryDict): Словарь в виде {год: оклад}
+        count_salary (VacancyCountDict): Словарь в виде {количество: оклад}
+        job_year_salary (VacancySalaryDict): Словарь в виде {год: оклад} по указанной профессии
+        job_count_salary (VacancyCountDict): Словарь в виде {количество: оклад} по указанной профессии
+        city_salary (VacancySalaryDict): Словарь в виде {город: оклад}
+        city_count (VacancyCountDict): Словарь в виде {город: количество}
+    """
     def __init__(self, dataset: DataSet, profession_name: str):
+        """
+        Инициализирует объект AnalisysResult
+
+        :param dataset: Набор данных по вакансиям
+        :param profession_name: Название профессии
+        """
         self.dataset = dataset
         self.profession_name = profession_name
         self.year_salary = VacancySalaryDict()
@@ -171,6 +309,11 @@ class AnalysisResult:
         self.city_count = VacancyCountDict()
 
     def get_results(self):
+        """
+        Получает результаты анализа по вакансиям
+
+        :return: Возвращает объект AnalysisResult
+        """
         for vacancy in self.dataset.vacancies_objects:
             self.year_salary.add(salary=vacancy.salary, year=vacancy.published_at)
             self.count_salary.add(key=vacancy.published_at)
@@ -191,6 +334,11 @@ class AnalysisResult:
         return self
 
     def print_result(self):
+        """
+        Выполняет печать словарей
+
+        :return: Возвращает данные в виде объекта Report для дальнейшей конвертации в нужный формат представления данных
+        """
         year_salary = dict(sorted(self.year_salary.year_salary_dict.items(), key=lambda x: x[0]))
         count_salary = dict(sorted(self.count_salary.count_dict.items(), key=lambda x: x[0]))
         job_year_salary = dict(sorted(self.job_year_salary.year_salary_dict.items(), key=lambda x: x[0]))
@@ -215,6 +363,19 @@ class AnalysisResult:
 
 
 class Report:
+    """
+    Класс для представления данных отчета по анализу вакансий
+
+    Attributes:
+        profession_name (str): Название профессии
+        year_salary (Dict[str, str]): Словарь в виде {год: оклад}
+        count_salary (Dict[str, str]): Словарь в виде {количество: оклад}
+        job_year_salary (Dict[str, str]): Словарь в виде {год: оклад} по указанной профессии
+        job_count_salary (Dict[str, str]): Словарь в виде {количество: оклад} по указанной профессии
+        city_salary (Dict[str, str]): Словарь в виде {город: оклад}
+        city_count (Dict[str, str]): Словарь в виде {город: количество}
+
+    """
     def __init__(self,
                  profession_name: str,
                  year_salary: Dict[str, str],
@@ -223,6 +384,17 @@ class Report:
                  job_count_salary: Dict[str, str],
                  city_salary: Dict[str, str],
                  city_count: Tuple[Any]):
+        """
+        Инициализирует объект Report
+
+        :param profession_name: Название профессии
+        :param year_salary: Словарь в виде {год: оклад}
+        :param count_salary: Словарь в виде {количество: оклад}
+        :param job_year_salary: Словарь в виде {год: оклад} по указанной профессии
+        :param job_count_salary: Словарь в виде {количество: оклад} по указанной профессии
+        :param city_salary: Словарь в виде {город: оклад}
+        :param city_count: Словарь в виде {город: количество}
+        """
         self.profession_name = profession_name
         self.year_salary = year_salary
         self.count_salary = count_salary
@@ -233,12 +405,23 @@ class Report:
 
     @staticmethod
     def __error_checker(file_name: str, file_type: str):
+        """
+        Проверяет вводимые данные на корректность
+
+        :param file_name: Название файла
+        :param file_type: Расширение файла
+        """
         if isinstance(file_name, type(str)):
             raise TypeError('Указанное название файла имеет неправильный тип')
         if not file_name.endswith(file_type):
             raise KeyError('Указанный файл имеет неправильное расширение')
 
     def generate_excel(self, file_name: str) -> None:
+        """
+        Генерирует Excel-таблицу с анализом данных по вакансиям
+
+        :param file_name: Название файла Excel-таблицы
+        """
         self.__error_checker(file_name, '.xlsx')
         wb = openpyxl.Workbook()
         header_style = NamedStyle(name='headers')
@@ -269,6 +452,11 @@ class Report:
 
     @staticmethod
     def __styling_excel(sheet: openpyxl) -> None:
+        """
+        Выполняет стилизацию Excel-таблицы
+
+        :param sheet: Лист Excel-таблицы
+        """
         dimensions = {}
         for row in sheet.rows:
             for cell in row:
@@ -285,6 +473,11 @@ class Report:
             sheet.column_dimensions[column].width = value + 2
 
     def generate_image(self, file_name: str) -> None:
+        """
+        Генерирует изображение с визуальными данными по анализу вакансий
+
+        :param file_name: Название файла изображения
+        """
         self.__error_checker(file_name, '.png')
         graph = plt.figure()
         width = 0.4
@@ -333,6 +526,11 @@ class Report:
         plt.savefig(file_name)
 
     def generate_pdf(self, file_name: str) -> None:
+        """
+        Генерирует PDF-файл с данными по анализу вакансий
+
+        :param file_name: Название PDF-файла
+        """
         self.__error_checker(file_name, '.pdf')
         env = Environment(loader=FileSystemLoader('./'))
         template = env.get_template('template.html')
@@ -355,6 +553,10 @@ class Report:
         pdfkit.from_string(pdf_template, file_name, configuration=config, options={"enable-local-file-access": ""})
 
     def __generate_years_table(self) -> List[List[str]]:
+        """
+        Составляет список с данными по годам для Excel-таблицы
+        :return: Возвращает список с данными для таблицы
+        """
         headers = ['Год',
                    'Средняя зарплата',
                    f'Средняя зарплата - {self.profession_name}',
@@ -365,6 +567,10 @@ class Report:
         return [headers, *rows]
 
     def __generate_city_table(self) -> (List[List[str]], List[List[str]]):
+        """
+        Составляет список с данными по городам для Excel-таблицы
+        :return: Возвращает список с данными для таблицы
+        """
         salary_city = [['Город', 'Уровень зарплат']]
         count_city = [['Город', 'Доля вакансий']]
         iterable_city_count = iter(self.city_count)
@@ -376,6 +582,9 @@ class Report:
 
 
 def generate_pdf():
+    """
+    Запускает генерацию PDF-файла
+    """
     inputs = UserInput()
-    AnalysisResult(DataSet(inputs.file_name), inputs.profession_name).get_results().print_result()\
+    AnalysisResult(DataSet(inputs.file_name), inputs.profession_name).get_results().print_result() \
         .generate_pdf(input('Введите название сохраняемого файла: '))
