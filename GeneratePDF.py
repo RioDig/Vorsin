@@ -22,6 +22,7 @@ class DataSet:
         file_name (str): Название файла исходных данных
         vacancies_objects (List[Vacancy]): Список вакансий типа Vacancy
     """
+
     def __init__(self, file_name: str):
         """
         Инициализирует объект DataSet, выполняет преобразование файла в список вакансий.
@@ -100,6 +101,7 @@ class Vacancy:
         area_name (str): Город вакансии.
         published_at (int): Год публикации вакансии.
     """
+
     def __init__(self, vacancy: Dict):
         """
         Инициализирует объект Vacancy, выполняет преобразования полей.
@@ -140,7 +142,19 @@ class Vacancy:
         self.salary = int((float(vacancy['salary_from']) + float(vacancy['salary_to'])) / 2 * self.__currency_to_rub[
             vacancy['salary_currency']])
         self.area_name = vacancy['area_name']
-        self.published_at = int(DT.datetime.strptime(vacancy['published_at'], '%Y-%m-%dT%H:%M:%S%z').strftime('%Y'))
+        self.published_at = datetime_first_test(vacancy['published_at'])
+
+
+def datetime_first_test(test):
+    return int(DT.datetime.strptime(test, '%Y-%m-%dT%H:%M:%S%z').strftime('%Y'))
+
+
+def datetime_second_test(test):
+    return int(test[:4])
+
+
+def datetime_third_test(test):
+    return int(test.split('-')[0])
 
 
 def custom_exit(message: str) -> None:
@@ -161,6 +175,7 @@ class UserInput:
         file_name (str): Название файла исходных данных
         profession_name (str): Название профессии
     """
+
     def __init__(self):
         """
         Инициализирует объект UserInput, выполняет сохранение пользовательских вводов
@@ -182,6 +197,7 @@ class VacancyCountDict:
         length (int): Длина словаря
         count_dict (dict): Пользовательский словарь
     """
+
     def __init__(self):
         """
         Инициализирует объект VacancyCountDict
@@ -235,6 +251,7 @@ class VacancySalaryDict:
         year_count_dict (dict): Словарь в виде {год: количество}
         area_salary_dict (dict): Словарь в виде {город: оклад}
     """
+
     def __init__(self):
         """
         Инициализиует объект VacancySalaryDict
@@ -351,6 +368,7 @@ class AnalysisResult:
         city_salary (VacancySalaryDict): Словарь в виде {город: оклад}
         city_count (VacancyCountDict): Словарь в виде {город: количество}
     """
+
     def __init__(self, dataset: DataSet, profession_name: str):
         """
         Инициализирует объект AnalisysResult
@@ -435,6 +453,7 @@ class Report:
         city_count (Dict[str, str]): Словарь в виде {город: количество}
 
     """
+
     def __init__(self,
                  profession_name: str,
                  year_salary: Dict[str, str],
