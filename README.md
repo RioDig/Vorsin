@@ -22,3 +22,21 @@
 
 ![33](https://user-images.githubusercontent.com/103594188/205503926-2e490e8f-ae9a-4db7-9567-ed09dc586cf6.png)
 
+
+# Отчет по заданию 2.3.3
+
+Использование datetime и ее методов
+
+![strftime](https://user-images.githubusercontent.com/103594188/205509726-123ea7f2-55e5-48c7-8992-ceb621e016da.png)
+
+Использование обычных split
+
+![сплит](https://user-images.githubusercontent.com/103594188/205509730-cc640039-bbf1-4111-ad2a-5ebc7d331c7f.png)
+
+Использование срезов
+
+![срезы](https://user-images.githubusercontent.com/103594188/205509731-73efb045-9ffd-4d59-b38a-c9eec574e797.png)
+
+Методы
+
+![image](https://user-images.githubusercontent.com/103594188/205509794-c655ba30-9a6d-4e92-bd7c-8bb930a626aa.png)
