@@ -8,6 +8,8 @@
 
 [Задание 3.2.2](#3.2.2)
 
+[Задание 3.2.3](#3.2.3)
+
 
 
 
@@ -79,4 +81,17 @@
 
 ![мульти](https://user-images.githubusercontent.com/103594188/206872131-fff5c03f-2846-4a81-8dee-7ac0f8932975.png)
 
+
+<a name="3.2.3"></a> 
+# Отчет по заданию 3.2.3
+
+Multiprocessing оказался быстрее, поэтому я оставлю его в основной программе
+
+Время работы с multiprocessing
+
+![мульти](https://user-images.githubusercontent.com/103594188/206875595-b81d8c34-6a30-462f-bbab-dbd1805c1a1f.png)
+
+Время работы с concurrent futures
+
+![1](https://user-images.githubusercontent.com/103594188/206875597-a8eef82b-bf18-42db-8f44-a4ae9ab30b15.png)
 
