@@ -35,5 +35,6 @@ def separate_csv(file_name: str) -> None:
             file_writer = csv.DictWriter(write_file, delimiter=",",
                                          lineterminator="\r", fieldnames=vacancies[0])
             file_writer.writeheader()
+            file_writer.writerows(separated_vacancies[year])
 
 separate_csv(r'..\csv\vacancies_by_year.csv')
