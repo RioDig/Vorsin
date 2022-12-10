@@ -6,6 +6,8 @@
 
 [Задание 3.2.1](#3.2.1)
 
+[Задание 3.2.2](#3.2.2)
+
 
 
 
@@ -63,5 +65,18 @@
 ![image](https://user-images.githubusercontent.com/103594188/206849394-ab10edbf-34e6-483c-be5b-244dddf34113.png)
 
 ![image](https://user-images.githubusercontent.com/103594188/206849970-4b33ce32-83c9-465f-910c-ec42d2ab959d.png)
+
+
+<a name="3.2.1"></a> 
+# Отчет по заданию 3.2.2
+
+Результат без мультипроцессорности
+
+![без мульти](https://user-images.githubusercontent.com/103594188/206872117-3428cb3d-6f09-45a6-bcfd-b1ebfe72f13e.png)
+
+
+Результат с мультипроцессорностью (скорость увеличилась примерно в два раза)
+
+![мульти](https://user-images.githubusercontent.com/103594188/206872131-fff5c03f-2846-4a81-8dee-7ac0f8932975.png)
 
 
