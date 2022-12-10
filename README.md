@@ -40,3 +40,14 @@
 Методы
 
 ![image](https://user-images.githubusercontent.com/103594188/205509794-c655ba30-9a6d-4e92-bd7c-8bb930a626aa.png)
+
+
+# Отчет по заданию 3.2.1
+
+Код выполнил деление исходного csv-файла на несколько новых, соответствующих каждому году
+
+![image](https://user-images.githubusercontent.com/103594188/206849394-ab10edbf-34e6-483c-be5b-244dddf34113.png)
+
+![image](https://user-images.githubusercontent.com/103594188/206849970-4b33ce32-83c9-465f-910c-ec42d2ab959d.png)
+
+
