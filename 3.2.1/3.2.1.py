@@ -29,9 +29,9 @@ def separate_csv(file_name: str) -> None:
         else:
             separated_vacancies[vacancy['published_at'][:4]].append(vacancy)
 
-    os.mkdir('../3.2.2/vacancies')
+    os.mkdir('../3.2.2-3.2.3/vacancies')
     for year in separated_vacancies.keys():
-        with open(f'../3.2.2/vacancies\{year}.csv', mode="w", encoding='utf-8-sig') as write_file:
+        with open(f'../3.2.2-3.2.3/vacancies\{year}.csv', mode="w", encoding='utf-8-sig') as write_file:
             file_writer = csv.DictWriter(write_file, delimiter=",",
                                          lineterminator="\r", fieldnames=vacancies[0])
             file_writer.writeheader()
