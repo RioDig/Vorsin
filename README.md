@@ -67,7 +67,7 @@
 ![image](https://user-images.githubusercontent.com/103594188/206849970-4b33ce32-83c9-465f-910c-ec42d2ab959d.png)
 
 
-<a name="3.2.1"></a> 
+<a name="3.2.2"></a> 
 # Отчет по заданию 3.2.2
 
 Результат без мультипроцессорности
