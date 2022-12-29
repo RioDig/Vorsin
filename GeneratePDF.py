@@ -666,3 +666,6 @@ def generate_pdf():
     inputs = UserInput()
     AnalysisResult(DataSet(inputs.file_name), inputs.profession_name).get_results().print_result() \
         .generate_pdf(input('Введите название сохраняемого файла: '))
+
+if __name__ == '__main__':
+    generate_pdf()
