@@ -125,6 +125,6 @@ Multiprocessing оказался быстрее, поэтому я оставл�
 # Отчет по заданию 3.3.3
 
 Выбранная дата - 29.12.22
-![image](https://user-images.githubusercontent.com/103594188/210012685-32e6a6a8-c7a3-4524-adf2-4f065e78d8d4.png)
+![image](https://user-images.githubusercontent.com/103594188/210012818-1305afcd-b974-4e42-b523-68f0dd105ac7.png)
 
 
