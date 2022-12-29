@@ -40,10 +40,10 @@ class HeadHunterCSV:
         :return: Возвращает список с вакансиями с нужными полями
         """
         return [[vacancy["name"],
-                 vacancy["area"]["name"],
                  vacancy["salary"]["from"],
                  vacancy["salary"]["to"],
                  vacancy["salary"]["currency"],
+                 vacancy["area"]["name"],
                  vacancy["published_at"]] for vacancy in vacancies if vacancy["salary"]]
 
 
