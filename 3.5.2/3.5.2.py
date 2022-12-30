@@ -76,3 +76,5 @@ class ValuteConverter:
 
 
 ValuteConverter(pd.read_csv('vacancies_dif_currencies.csv')).csv_to_vacancy_sql('vacancy_db.sqlite')
+
+# Ворсин Алексей Андреевич
