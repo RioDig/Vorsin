@@ -22,6 +22,8 @@
 
 [Задание 3.5.1](#3.5.1)
 
+[Задание 3.5.2](#3.5.2)
+
 
 
 
@@ -150,3 +152,7 @@ Multiprocessing оказался быстрее, поэтому я оставл�
 
 ![image](https://user-images.githubusercontent.com/103594188/210067201-3b29471f-e0c0-4683-9d1c-b62cc69569c9.png)
 
+<a name="3.5.2"></a>
+# Отчет по заданию 3.5.2
+
+![image](https://user-images.githubusercontent.com/103594188/210081472-fa8d955c-797d-4e6f-bff0-7ec965beebda.png)
